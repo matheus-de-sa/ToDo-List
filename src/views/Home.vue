@@ -1,11 +1,6 @@
 <template>
-    <div>
-        <Task></Task>
-        <Task></Task>
-        <Task></Task>
-        <Task></Task>
-        <Task></Task>
-        <Task></Task>
+    <div data-aos="fade-left" class="Task">
+        <Task v-for="(item, index) in ids" :key="index" :id="item"></Task>
     </div>
 </template>
 
@@ -14,7 +9,7 @@ import Task from '../components/Task/Task.vue'
 export default {
     data() {
         return {
-            route: ''
+            ids: [1, 2, 3, 4, 5, 6]
         }
     },
     components: { Task }
@@ -22,5 +17,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+.Task {
+    overflow: hidden !important;
+}
 </style>

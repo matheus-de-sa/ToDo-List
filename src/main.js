@@ -5,10 +5,14 @@ import store from './store'
 import Vuesax from 'vuesax'
 import VueI18n from 'vue-i18n'
 import VueMq from 'vue-mq'
+import FirebaseApp from './firebase/index'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import './registerServiceWorker'
 import 'vuesax/dist/vuesax.css'
 import 'hooper/dist/hooper.css'
 import './assets/scss/style.scss'
+
+const Auth = getAuth(FirebaseApp)
 
 Vue.use(VueI18n)
 Vue.use(Vuesax, {
@@ -47,13 +51,13 @@ const i18nConfig = (VueI18n, lang) => {
 
 const i18n = i18nConfig(VueI18n, idioma())
 
-console.log(i18n)
-
 Vue.config.productionTip = false
 
-new Vue({
-    i18n,
-    router,
-    store,
-    render: (h) => h(App)
-}).$mount('#app')
+onAuthStateChanged(Auth, () => {
+    new Vue({
+        i18n,
+        router,
+        store,
+        render: (h) => h(App)
+    }).$mount('#app')
+})

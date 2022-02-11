@@ -1,10 +1,15 @@
 <template>
     <hooper
         class="mt-3"
-        :ref="`hooper`"
+        :ref="`Task-${id}`"
+        :wheelControl="false"
         :initialSlide="1"
         :itemsToShow="1"
-        style="height: 5.5rem; box-shadow: 0px 0px 10px -5px #0000004b"
+        style="
+            height: 5.5rem;
+            box-shadow: 0px 0px 10px -5px #0000004b;
+            overflow: hidden !important;
+        "
         @slide="updateCarousel"
         :shortDrag="false"
         :trimWhiteSpace="true"
@@ -18,9 +23,12 @@
             </div>
         </slide>
         <slide>
-            <div class="Task">
+            <div
+                class="Task"
+                :style="read ? 'background-color: rgb(224, 224, 240)' : ''"
+            >
                 <div class="TaskBody">
-                    <div class="TaskText">
+                    <div class="TaskText" :class="read ? 'Read' : ''">
                         <h6>Título</h6>
                         <span
                             >Lorem ipsum dolor sit amet consectetur adipisicing
@@ -28,7 +36,7 @@
                             tempora</span
                         >
                     </div>
-                    <div class="TaksInfo">
+                    <div class="d-none TaksInfo">
                         <i class="bx bx-check-double"></i>
                         <div class="d-none">09/02/2022</div>
                     </div>
@@ -52,6 +60,16 @@ import { Hooper, Slide } from 'hooper'
 export default {
     name: 'Task',
     components: { Hooper, Slide },
+    props: {
+        id: {
+            type: Number,
+            default: null
+        },
+        data: {
+            type: Object,
+            default: null
+        }
+    },
     data() {
         return {
             read: false,
@@ -60,30 +78,31 @@ export default {
     },
     watch: {
         carouselData(data) {
-            this.$refs[`hooper`].slideTo(this.carouselData)
+            this.$refs[`Task-${this.id}`].slideTo(this.carouselData)
 
-            if (data === 0) this.delNotification()
-            if (data === 2) this.readNotification()
+            if (data === 2) this.delTask()
+            if (data === 0) this.readTask()
         }
     },
     methods: {
         slidePrev() {
-            this.$refs[`hooper`].slidePrev()
+            this.$refs[`Task-${this.id}`].slidePrev()
         },
         slideNext() {
-            this.$refs[`hooper`].slideNext()
+            this.$refs[`Task-${this.id}`].slideNext()
         },
         updateCarousel(payload) {
             this.carouselData = payload.currentSlide
         },
-        delNotification() {
-            setTimeout(() => {
-                this.slideNext()
-            }, 800)
-        },
-        readNotification() {
+        delTask() {
             setTimeout(() => {
                 this.slidePrev()
+            }, 800)
+        },
+        readTask() {
+            setTimeout(() => {
+                this.read = true
+                this.slideNext()
             }, 800)
         }
     }
@@ -91,6 +110,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.Read {
+    text-decoration: line-through;
+}
+
 .Task {
     width: 100vw;
     height: 5.5rem;
@@ -103,7 +126,6 @@ export default {
         justify-content: space-between;
         align-items: center;
         .TaskText {
-            padding-right: 0.5rem;
             text-align: start;
             h6 {
                 font-weight: 500;
@@ -117,7 +139,6 @@ export default {
         }
         .TaksInfo {
             text-align: end;
-            padding-left: 0.5rem;
             i {
                 font-weight: 500;
                 font-size: 1.3rem;

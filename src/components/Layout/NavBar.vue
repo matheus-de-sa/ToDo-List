@@ -31,7 +31,7 @@ export default {
 }
 
 .User {
-    border: 2px solid rgb(76, 99, 233);
+    border: 2px solid #008c9e;
     padding: 1rem;
     width: 2rem;
     height: 2rem;

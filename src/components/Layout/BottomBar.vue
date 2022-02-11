@@ -1,29 +1,32 @@
 <template>
     <div class="Footer">
+        <div id="activeIcon" v-show="route !== 'Task'" class="activeIcon"></div>
         <div class="Nav">
             <div
-                @click="route = ''"
-                :class="route === '' ? 'linkActive' : ''"
+                id="Home"
+                @click="changeRoute('/')"
+                :class="route === 'Home' ? 'linkActive' : ''"
                 class="NavList"
             >
                 <i class="bx bx-list-ul"></i>
-                <span v-if="route === ''">Lista</span>
+                <span v-if="route === 'Home'">Lista</span>
             </div>
-            <div @click="route = 'add'" class="NavAdd">
+            <div @click="changeRoute('/task')" class="NavAdd">
                 <div
-                    :class="route === 'add' ? 'linkActiveAdd' : ''"
+                    :class="route === 'Task' ? 'linkActiveAdd' : ''"
                     class="Icon"
                 >
                     <i class="bx bx-plus"></i>
                 </div>
             </div>
             <div
-                @click="route = 'calendar'"
-                :class="route === 'calendar' ? 'linkActive' : ''"
+                id="Calendar"
+                @click="changeRoute('/calendar')"
+                :class="route === 'Calendar' ? 'linkActive' : ''"
                 class="NavCalendar"
             >
                 <i class="bx bx-calendar"></i>
-                <span v-if="route === 'calendar'">Calendário</span>
+                <span v-if="route === 'Calendar'">Calendário</span>
             </div>
         </div>
     </div>
@@ -35,11 +38,76 @@ export default {
         return {
             route: ''
         }
+    },
+    mounted() {
+        this.route = this.$route.meta.title
+
+        if (this.route === 'Calendar') {
+            let { left } = document
+                .getElementById('Calendar')
+                .getBoundingClientRect()
+
+            document.getElementById('activeIcon').style.left = `${left}px`
+        } else {
+            let { left } = document
+                .getElementById('Home')
+                .getBoundingClientRect()
+            document.getElementById('activeIcon').style.left = `${left}px`
+        }
+    },
+    watch: {
+        $route() {
+            this.route = this.$route.meta.title
+
+            if (this.route === 'Calendar') {
+                let { left } = document
+                    .getElementById('Calendar')
+                    .getBoundingClientRect()
+
+                document.getElementById('activeIcon').style.left = `${left}px`
+            } else {
+                let { left } = document
+                    .getElementById('Home')
+                    .getBoundingClientRect()
+                document.getElementById('activeIcon').style.left = `${left}px`
+            }
+        }
+    },
+    methods: {
+        changeRoute(route) {
+            if (route !== this.$route.path) this.$router.push(route)
+
+            if (route === '/calendar') {
+                let { left } = document
+                    .getElementById('Calendar')
+                    .getBoundingClientRect()
+
+                document.getElementById('activeIcon').style.left = `${left}px`
+            } else {
+                let { left } = document
+                    .getElementById('Home')
+                    .getBoundingClientRect()
+                document.getElementById('activeIcon').style.left = `${left}px`
+            }
+        }
     }
 }
 </script>
 
 <style scoped lang="scss">
+.activeIcon {
+    position: absolute;
+    left: 0px;
+    bottom: 0;
+    background-color: #008c9e;
+    width: 4rem;
+    height: 0.3rem;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    margin-bottom: 3rem;
+    transition: all 0.4s ease;
+}
+
 .Footer {
     position: fixed;
     bottom: 0;
@@ -56,11 +124,12 @@ export default {
 }
 
 .NavAdd {
+    position: fixed;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 3.5rem;
-    background: rgb(76, 99, 233);
+    background: #008c9e;
     padding: 0.5rem;
     border-top-left-radius: 50rem;
     border-top-right-radius: 50rem;
@@ -77,13 +146,14 @@ export default {
 }
 
 .NavList {
-    width: 30%;
+    margin-right: 3rem;
+    width: 4rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     i {
         font-size: 1.5rem;
-        line-height: 0.9rem !important;
+        line-height: 1rem !important;
     }
     span {
         font-size: 0.8rem;
@@ -91,13 +161,14 @@ export default {
 }
 
 .NavCalendar {
-    width: 30%;
+    margin-left: 3rem;
+    width: 4rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     i {
-        font-size: 1.5rem;
-        line-height: 0.9rem !important;
+        font-size: 1.4rem;
+        line-height: 1rem !important;
     }
     span {
         font-size: 0.8rem;
@@ -106,12 +177,12 @@ export default {
 
 .linkActive {
     transition: all 0.4s ease;
-    color: rgb(76, 99, 233);
+    color: #008c9e;
 }
 
 .linkActiveAdd {
     transition: all 0.4s ease;
-    box-shadow: inset 0 0 0 2.5rem rgb(76, 99, 233);
+    box-shadow: inset 0 0 0 2.5rem #008c9e;
     background: none;
     color: #fff;
 }

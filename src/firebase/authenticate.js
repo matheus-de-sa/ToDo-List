@@ -1,59 +1,94 @@
-import FirebaseAuth from "./index";
+import FirebaseApp from './index'
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    GoogleAuthProvider,
+    signOut,
+    updateProfile
+} from 'firebase/auth'
 
-const Auth = FirebaseAuth.getAuth();
-const CreateEmail = FirebaseAuth.createUserWithEmailAndPassword;
-const SignEmail = FirebaseAuth.signInWithEmailAndPassword;
-const SignPopup = FirebaseAuth.signInWithPopup;
-const SignGoogle = FirebaseAuth.GoogleAuthProvider;
-const Logout = FirebaseAuth.signOut;
-const Provider = new FirebaseAuth.GoogleAuthProvider();
+const Auth = getAuth(FirebaseApp)
+const CreateEmail = createUserWithEmailAndPassword
+const SignEmail = signInWithEmailAndPassword
+const SignPopup = signInWithPopup
+const SignGoogle = GoogleAuthProvider
+const Logout = signOut
+const Provider = new GoogleAuthProvider()
+const update = updateProfile
 
 class Authenticate {
-    static async createUser(email, password) {
+    static async getUser() {
         try {
-            const user = await CreateEmail(Auth, email, password);
+            const user = Auth.currentUser
 
-            return user;
+            return user
         } catch (error) {
-            return error.message;
+            return error.message
         }
     }
-    static async signEmail(Auth, email, password) {
+    static async updateUser(data) {
         try {
-            const user = await SignEmail(Auth, email, password);
+            const user = await update(Auth.currentUser, data)
 
-            return user;
+            return 'Usuário Atualizado'
         } catch (error) {
-            return error.message;
+            return error.message
+        }
+    }
+    static async createUser(email, password, name) {
+        try {
+            const userCreated = await CreateEmail(Auth, email, password)
+
+            if (userCreated) {
+                await Authenticate.updateUser({
+                    displayName: this.name
+                })
+                const user = await Authenticate.getUser()
+
+                return user
+            }
+        } catch (error) {
+            return error.message
+        }
+    }
+    static async signEmail(email, password) {
+        try {
+            const user = await SignEmail(Auth, email, password)
+
+            return user
+        } catch (error) {
+            return error.message
         }
     }
     static async logout() {
         try {
-            const user = await Logout(Auth);
+            const user = await Logout(Auth)
 
-            return user;
+            return user
         } catch (error) {
-            return error.message;
+            return error.message
         }
     }
     static async signPopup() {
         try {
-            const result = await SignPopup(Auth, Provider);
+            const result = await SignPopup(Auth, Provider)
 
-            return result;
+            return result
         } catch (error) {
-            return error.message;
+            return error.message
         }
     }
     static async signGoogle(result) {
         try {
-            const user = await SignGoogle.credentialFromResult(result);
+            const user = await SignGoogle.credentialFromResult(result)
 
-            return user;
+            return user
         } catch (error) {
-            return error.message;
+            return error.message
         }
     }
 }
 
-export default Authenticate;
+export default Authenticate
