@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <div></div>
+        <img src="../../assets/img/icon-512x512.png" />
         <div>
             <div class="User">MS</div>
         </div>
@@ -28,6 +28,9 @@ export default {
     height: 3rem;
     background: rgb(255, 255, 255);
     box-shadow: 0px 7px 15px -7px #0000004b;
+    img {
+        width: 4rem;
+    }
 }
 
 .User {

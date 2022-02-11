@@ -1,6 +1,6 @@
 <template>
     <div class="Footer">
-        <div id="activeIcon" v-show="route !== 'Task'" class="activeIcon"></div>
+        <div id="activeIcon" class="activeIcon"></div>
         <div class="Nav">
             <div
                 id="Home"
@@ -11,7 +11,7 @@
                 <i class="bx bx-list-ul"></i>
                 <span v-if="route === 'Home'">Lista</span>
             </div>
-            <div @click="changeRoute('/task')" class="NavAdd">
+            <div id="Task" @click="changeRoute('/task')" class="NavAdd">
                 <div
                     :class="route === 'Task' ? 'linkActiveAdd' : ''"
                     class="Icon"
@@ -48,11 +48,16 @@ export default {
                 .getBoundingClientRect()
 
             document.getElementById('activeIcon').style.left = `${left}px`
-        } else {
+        } else if (this.route === 'Home') {
             let { left } = document
                 .getElementById('Home')
                 .getBoundingClientRect()
             document.getElementById('activeIcon').style.left = `${left}px`
+        } else {
+            let { left } = document
+                .getElementById('Task')
+                .getBoundingClientRect()
+            document.getElementById('activeIcon').style.left = `${left + 10}px`
         }
     },
     watch: {
@@ -65,11 +70,18 @@ export default {
                     .getBoundingClientRect()
 
                 document.getElementById('activeIcon').style.left = `${left}px`
-            } else {
+            } else if (this.route === 'Home') {
                 let { left } = document
                     .getElementById('Home')
                     .getBoundingClientRect()
                 document.getElementById('activeIcon').style.left = `${left}px`
+            } else {
+                let { left } = document
+                    .getElementById('Task')
+                    .getBoundingClientRect()
+                document.getElementById('activeIcon').style.left = `${
+                    left + 10
+                }px`
             }
         }
     },
@@ -83,11 +95,18 @@ export default {
                     .getBoundingClientRect()
 
                 document.getElementById('activeIcon').style.left = `${left}px`
-            } else {
+            } else if (route === '') {
                 let { left } = document
                     .getElementById('Home')
                     .getBoundingClientRect()
                 document.getElementById('activeIcon').style.left = `${left}px`
+            } else {
+                let { left } = document
+                    .getElementById('Task')
+                    .getBoundingClientRect()
+                document.getElementById('activeIcon').style.left = `${
+                    left + 10
+                }px`
             }
         }
     }
