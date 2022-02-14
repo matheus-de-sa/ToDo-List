@@ -1,57 +1,80 @@
-import FirebaseDB from "./index";
+import FirebaseApp from './index'
+import {
+    getFirestore,
+    doc,
+    collection,
+    addDoc,
+    setDoc,
+    getDoc,
+    getDocFromCache,
+    where,
+    query
+} from 'firebase/firestore'
 
-const db = FirebaseDB.getFirestore();
-const collection = FirebaseDB.collection;
-const doc = FirebaseDB.doc;
-const addDoc = FirebaseDB.addDoc;
-const setDoc = FirebaseDB.setDoc;
-const getDoc = FirebaseDB.getDoc;
-const getDocCache = FirebaseDB.getDocFromCache;
-const where = FirebaseDB.where;
-const query = FirebaseDB.query;
+const db = getFirestore(FirebaseApp)
 
 class DataBase {
+    static async writeDoc(collectionName, docName, groupName, taskId, data) {
+        try {
+            let result = await addDoc(
+                collection(db, collectionName, docName, groupName),
+                data,
+                {
+                    merge: true
+                }
+            )
+
+            // if (taskId) {
+            //     result = await
+            // } else {
+            //     result = await
+            // }
+            return result
+        } catch (error) {
+            return error
+        }
+    }
     static async writeSimpleDoc(collectionName, docName, data) {
         try {
-            let result = null;
+            let result = null
 
             if (docName) {
                 result = await setDoc(doc(db, collectionName, docName), data, {
                     merge: true
-                });
+                })
             } else {
-                result = await addDoc(doc(db, collectionName), data);
+                result = await addDoc(collection(db, collectionName), data)
             }
 
-            return result;
+            return result
         } catch (error) {
-            return error.message;
+            return error.message
         }
     }
     static async readSimpleDoc(collectionName, docName) {
         try {
-            const docSnap = await getDoc(doc(db, collectionName, docName));
+            const docSnap = await getDoc(doc(db, collectionName, docName))
 
-            return docSnap.data();
+            return docSnap.data()
         } catch (error) {
-            return error.message;
+            return error.message
         }
     }
     static async readSimpleCollection(collectionName) {
         try {
-            const querySnapshot = await getDoc(collection(db, collectionName));
+            const querySnapshot = await getDoc(collection(db, collectionName))
 
-            const result = [];
+            const result = []
 
             querySnapshot.forEach((doc) => {
-                result.push(doc.data());
-            });
+                result.push(doc.data())
+            })
 
-            return result;
+            return result
         } catch (error) {
-            return error.message;
+            return error.message
         }
     }
 }
 
-export default DataBase;
+export default DataBase

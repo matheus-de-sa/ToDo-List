@@ -2,7 +2,16 @@
     <div class="header">
         <img src="../../assets/img/icon-512x512.png" />
         <div>
-            <div class="User">MS</div>
+            <div class="User">
+                <img
+                    v-if="User.photoURL"
+                    :src="User.photoURL"
+                    alt="Foto de Perfil do Usuário"
+                />
+                <div v-else>
+                    {{ Name }}
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -11,6 +20,20 @@
 export default {
     data() {
         return {}
+    },
+    computed: {
+        User() {
+            return this.$store.getters.getUser
+        },
+        Name() {
+            let { displayName } = this.User
+
+            displayName = displayName.replace(' de ', ' ')
+
+            let name = displayName.split(' ')
+
+            return `${name[0][0]}${name[1][0]}`
+        }
     }
 }
 </script>
@@ -42,5 +65,11 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    img {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 1rem;
+        object-fit: cover;
+    }
 }
 </style>
