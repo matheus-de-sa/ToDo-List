@@ -27,7 +27,7 @@
                         for="TextArea"
                         >Descrição</label
                     >
-                    <div>
+                    <div class="LabelTextArea">
                         <textarea
                             @change="testDataInput"
                             v-model="description"
@@ -52,7 +52,7 @@
                         for="Group"
                         >Grupo</label
                     >
-                    <div>
+                    <div class="InputLabel">
                         <input
                             @change="testDataInput"
                             id="Group"
@@ -62,8 +62,8 @@
                             type="text"
                         />
                         <datalist class="dataList" id="lista">
-                            <option value="sdsa">sdsa</option>
-                            <option value="asdsad">asdsad</option>
+                            <!-- <option value="sdsa">sdsa</option>
+                            <option value="asdsad">asdsad</option> -->
                         </datalist>
                         <label
                             v-show="group.length === 0"
@@ -151,24 +151,47 @@ export default {
             try {
                 if (this.testData) {
                     this.loading = true
+                    let result = null
+
+                    let crypto = require('crypto')
+                    let id = 'a' + crypto.randomBytes(8).toString('hex')
+
                     let data = {
+                        id: id,
                         title: this.title,
                         description: this.description,
-                        group: this.group,
-                        date: Number(moment(this.date).format('x'))
+                        group: this.group || null,
+                        date: Number(moment(this.date).format('x')),
+                        read: false
                     }
 
-                    const result = await db.writeDoc(
+                    result = await db.writeTask(
                         'Users',
                         this.$store.getters.getUser.uid,
-                        'Tasks',
-                        false,
+                        this.group || null,
+                        id,
                         data
                     )
 
-                    console.log(result)
+                    if (result) {
+                        this.loading = false
+                        this.testData = false
+                        this.title = ''
+                        this.description = ''
+                        this.group = ''
+
+                        let date = new window.Date().getDate()
+                        let month = new window.Date().getMonth()
+                        let year = new window.Date().getFullYear()
+
+                        month = month + 1
+                        month = month + 1 < 10 ? `0${month}` : month
+
+                        this.date = `${year}-${month}-${date}`
+                    }
                 }
             } catch (error) {
+                this.loading = false
                 console.log(error)
             }
         },
@@ -192,17 +215,28 @@ export default {
     background-color: red;
 }
 
-.inputPerso {
-    color: rgb(44, 62, 80);
-    padding: 7px 10px;
-    background-color: rgb(244, 247, 248);
-    border-radius: 12px;
-    border: 1px solid transparent;
-    width: 100%;
-    &:focus-visible {
-        padding: 7px 13px;
-        outline: none;
-        border-bottom: 2px #008c9e solid;
+.InputLabel {
+    position: relative;
+    .inputPerso {
+        color: rgb(44, 62, 80);
+        padding: 7px 10px;
+        background-color: rgb(244, 247, 248);
+        border-radius: 12px;
+        border: 1px solid transparent;
+        width: 100%;
+        &:focus-visible {
+            padding: 7px 13px;
+            outline: none;
+            border-bottom: 2px #008c9e solid;
+        }
+    }
+    .fontTextAreaEmpty {
+        transition: all 0.25s ease;
+        padding: 7px 0px;
+        left: 13px;
+        position: absolute;
+        font-size: 0.8rem;
+        opacity: 0.4;
     }
 }
 
@@ -210,32 +244,34 @@ export default {
     opacity: 0;
 }
 
-.textArea {
-    color: rgb(44, 62, 80);
-    padding: 7px 10px;
-    background-color: rgb(244, 247, 248);
-    border: 1px solid transparent;
-    border-radius: 12px;
-    width: 100%;
-    transition: all 0.05s ease;
-    &:focus-visible {
-        padding: 7px 13px;
-        outline: none;
-        border-bottom: 2px #008c9e solid;
-    }
-}
-
 .textArea:focus-visible ~ .fontTextAreaEmpty {
     opacity: 0;
 }
 
-.fontTextAreaEmpty {
-    transition: all 0.25s ease;
-    padding: 7px 0px;
-    left: 44px;
-    position: absolute;
-    font-size: 0.8rem;
-    opacity: 0.4;
+.LabelTextArea {
+    position: relative;
+    .textArea {
+        color: rgb(44, 62, 80);
+        padding: 7px 10px;
+        background-color: rgb(244, 247, 248);
+        border: 1px solid transparent;
+        border-radius: 12px;
+        width: 100%;
+        transition: all 0.05s ease;
+        &:focus-visible {
+            padding: 7px 13px;
+            outline: none;
+            border-bottom: 2px #008c9e solid;
+        }
+    }
+    .fontTextAreaEmpty {
+        transition: all 0.25s ease;
+        padding: 7px 0px;
+        left: 13px;
+        position: absolute;
+        font-size: 0.8rem;
+        opacity: 0.4;
+    }
 }
 
 .LabelSelect {

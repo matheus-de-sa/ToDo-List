@@ -1,3 +1,5 @@
+import { groupBy } from 'lodash'
+import moment from 'moment'
 import FirebaseApp from './index'
 import {
     getFirestore,
@@ -5,6 +7,7 @@ import {
     collection,
     addDoc,
     setDoc,
+    getDocs,
     getDoc,
     getDocFromCache,
     where,
@@ -14,22 +17,36 @@ import {
 const db = getFirestore(FirebaseApp)
 
 class DataBase {
-    static async writeDoc(collectionName, docName, groupName, taskId, data) {
+    static async writeTask(collectionName, docName, groupName, taskId, data) {
         try {
-            let result = await addDoc(
-                collection(db, collectionName, docName, groupName),
-                data,
-                {
-                    merge: true
-                }
+            let result = null
+            let docFire = doc(
+                db,
+                collectionName,
+                docName,
+                groupName ? 'Group' : 'Tasks',
+                taskId
             )
 
-            // if (taskId) {
-            //     result = await
-            // } else {
-            //     result = await
-            // }
-            return result
+            await setDoc(docFire, data)
+
+            return `Doc ${taskId} foi Criado`
+        } catch (error) {
+            return error
+        }
+    }
+    static async setReadTask(collectionName, docName, groupName, taskId, data) {
+        try {
+            let docFire = doc(
+                db,
+                collectionName,
+                docName,
+                groupName || 'Tasks',
+                taskId
+            )
+            await setDoc(docFire, data, { merge: true })
+
+            return `Doc ${taskId} Lido`
         } catch (error) {
             return error
         }
@@ -47,6 +64,55 @@ class DataBase {
             }
 
             return result
+        } catch (error) {
+            return error.message
+        }
+    }
+    static async readTasks(collectionName, docName) {
+        try {
+            const docSnap = await getDocs(
+                collection(db, collectionName, docName, 'Tasks')
+            )
+
+            let result = []
+
+            docSnap.forEach((doc) => {
+                result.push(doc.data())
+            })
+
+            return result
+        } catch (error) {
+            return error.message
+        }
+    }
+    static async readGroupedTasks(collectionName, docName) {
+        try {
+            const docSnap = await getDocs(
+                collection(db, collectionName, docName, 'Group')
+            )
+
+            const result = []
+
+            docSnap.forEach((doc) => {
+                result.push(doc.data())
+            })
+
+            const teste = groupBy(result, (i) => {
+                return i.group
+            })
+
+            const groupedTasksNames = Object.keys(teste).map((a) => a)
+
+            const groupedTasks = groupedTasksNames.map((group) => {
+                let obj = {
+                    group: group,
+                    data: teste[group]
+                }
+
+                return obj
+            })
+
+            return groupedTasks
         } catch (error) {
             return error.message
         }

@@ -1,18 +1,45 @@
 <template>
     <div data-aos="fade-left" class="Task">
-        <Task v-for="(item, index) in ids" :key="index" :id="item"></Task>
+        <GroupedTask
+            v-for="item in groupedTasks"
+            :key="item.id"
+            :data="item"
+        ></GroupedTask>
+        <Task v-for="item in tasks" :key="item.id" :data="item"></Task>
     </div>
 </template>
 
 <script>
+import db from '../firebase/db'
 import Task from '../components/Task/Task.vue'
+import GroupedTask from '../components/GroupedTask/GroupedTask.vue'
+
 export default {
+    name: 'Home',
     data() {
         return {
-            ids: [1, 2, 3, 4, 5, 6]
+            tasks: [],
+            groupedTasks: []
         }
     },
-    components: { Task }
+    components: { Task, GroupedTask },
+    async mounted() {
+        this.tasks = await db.readTasks(
+            'Users',
+            this.$store.getters.getUser.uid
+        )
+        this.groupedTasks = await this.getGroupedTasks()
+    },
+    methods: {
+        async getGroupedTasks() {
+            let data = await db.readGroupedTasks(
+                'Users',
+                this.$store.getters.getUser.uid
+            )
+
+            return data
+        }
+    }
 }
 </script>
 

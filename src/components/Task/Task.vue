@@ -1,7 +1,7 @@
 <template>
     <hooper
         class="mt-3"
-        :ref="`Task-${id}`"
+        :ref="`Task-${data.id}`"
         :wheelControl="false"
         :initialSlide="1"
         :itemsToShow="1"
@@ -15,10 +15,17 @@
         :trimWhiteSpace="true"
     >
         <slide>
-            <div class="ReadTask">
-                <div class="ReadBody">
+            <div
+                class="ReadTask"
+                :style="!read ? '' : 'background-color: #4D40FF'"
+            >
+                <div v-if="!read" class="ReadBody">
                     <div>Concluído</div>
                     <div><i class="bx bx-check-double"></i></div>
+                </div>
+                <div v-else class="ReadBody">
+                    <div>Remover Marcação</div>
+                    <i class="bx bx-x"></i>
                 </div>
             </div>
         </slide>
@@ -29,16 +36,11 @@
             >
                 <div class="TaskBody">
                     <div class="TaskText" :class="read ? 'Read' : ''">
-                        <h6>Título</h6>
-                        <span
-                            >Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Exercitationem quis sunt, quas delectus
-                            tempora</span
-                        >
+                        <h6>{{ data.title }}</h6>
+                        <span>{{ data.description }}</span>
                     </div>
-                    <div class="d-none TaksInfo">
-                        <i class="bx bx-check-double"></i>
-                        <div class="d-none">09/02/2022</div>
+                    <div class="TaksInfo">
+                        <div v-date-format="data.date"></div>
                     </div>
                 </div>
             </div>
@@ -56,15 +58,12 @@
 
 <script>
 import { Hooper, Slide } from 'hooper'
+import db from '../../firebase/db'
 
 export default {
     name: 'Task',
     components: { Hooper, Slide },
     props: {
-        id: {
-            type: Number,
-            default: null
-        },
         data: {
             type: Object,
             default: null
@@ -76,9 +75,12 @@ export default {
             carouselData: 1
         }
     },
+    mounted() {
+        if (this.data.read) this.read = true
+    },
     watch: {
         carouselData(data) {
-            this.$refs[`Task-${this.id}`].slideTo(this.carouselData)
+            this.$refs[`Task-${this.data.id}`].slideTo(this.carouselData)
 
             if (data === 2) this.delTask()
             if (data === 0) this.readTask()
@@ -86,10 +88,10 @@ export default {
     },
     methods: {
         slidePrev() {
-            this.$refs[`Task-${this.id}`].slidePrev()
+            this.$refs[`Task-${this.data.id}`].slidePrev()
         },
         slideNext() {
-            this.$refs[`Task-${this.id}`].slideNext()
+            this.$refs[`Task-${this.data.id}`].slideNext()
         },
         updateCarousel(payload) {
             this.carouselData = payload.currentSlide
@@ -99,9 +101,30 @@ export default {
                 this.slidePrev()
             }, 800)
         },
-        readTask() {
+        async readTask() {
+            let data = {
+                read: true
+            }
+
+            if (this.data.read) {
+                data.read = false
+            }
+
+            await db.setReadTask(
+                'Users',
+                this.$store.getters.getUser.uid,
+                this.data.group,
+                this.data.id,
+                data
+            )
+
             setTimeout(() => {
-                this.read = true
+                if (this.data.read) {
+                    this.read = false
+                } else {
+                    this.read = true
+                }
+
                 this.slideNext()
             }, 800)
         }

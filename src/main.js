@@ -11,6 +11,7 @@ import './registerServiceWorker'
 import 'vuesax/dist/vuesax.css'
 import 'hooper/dist/hooper.css'
 import './assets/scss/style.scss'
+import './utils/directives'
 
 const Auth = getAuth(FirebaseApp)
 
