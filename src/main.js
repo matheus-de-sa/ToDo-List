@@ -6,6 +6,7 @@ import Vuesax from 'vuesax'
 import VueI18n from 'vue-i18n'
 import VueMq from 'vue-mq'
 import FirebaseApp from './firebase/index'
+import VCalendar from 'v-calendar'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import './registerServiceWorker'
 import 'vuesax/dist/vuesax.css'
@@ -15,6 +16,7 @@ import './utils/directives'
 
 const Auth = getAuth(FirebaseApp)
 
+Vue.use(VCalendar)
 Vue.use(VueI18n)
 Vue.use(Vuesax, {
     colors: {

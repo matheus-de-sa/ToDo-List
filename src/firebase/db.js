@@ -159,6 +159,62 @@ class DataBase {
             return error.message
         }
     }
+    static async readAllTasks(collectionName, docName) {
+        try {
+            let queryGroup = query(
+                collection(db, collectionName, docName, 'Group')
+            )
+            let queryTasks = query(
+                collection(db, collectionName, docName, 'Tasks')
+            )
+
+            const docInGroup = await getDocs(queryGroup)
+
+            const docInTasks = await getDocs(queryTasks)
+
+            const docs = []
+
+            const data = []
+
+            docInGroup.forEach((doc) => {
+                data.push(doc.data())
+            })
+
+            docInTasks.forEach((doc) => {
+                data.push(doc.data())
+            })
+
+            data.forEach((doc) => {
+                let obj = {
+                    title: doc.title,
+                    description: doc.description,
+                    type: doc.type,
+                    read: doc.read,
+                    date: doc.date,
+                    color: '#3bb574fb'
+                }
+                if (doc.type === 'task') {
+                    obj.color = 'green'
+
+                    docs.push(obj)
+                }
+                if (doc.type === 'event') {
+                    obj.color = 'red'
+
+                    docs.push(obj)
+                }
+                if (doc.type === 'reminder') {
+                    obj.color = 'blue'
+
+                    docs.push(obj)
+                }
+            })
+
+            return docs
+        } catch (error) {
+            return error.message
+        }
+    }
     static async readSimpleDoc(collectionName, docName) {
         try {
             const docSnap = await getDoc(doc(db, collectionName, docName))

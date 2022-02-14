@@ -41,6 +41,23 @@
                     </div>
                     <div class="TaksInfo">
                         <div v-date-format="data.date"></div>
+                        <div class="Icon">
+                            <i
+                                v-if="data.type === 'task'"
+                                class="ml-1 bx bx-task"
+                                style="color: #3bb574fb"
+                            ></i>
+                            <i
+                                v-if="data.type === 'event'"
+                                class="ml-1 bx bx-calendar-event"
+                                style="color: rgb(218, 33, 33)"
+                            ></i>
+                            <i
+                                v-if="data.type === 'reminder'"
+                                class="ml-1 bx bx-receipt"
+                                style="color: #4d40ff"
+                            ></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -163,9 +180,9 @@ export default {
         .TaksInfo {
             text-align: end;
             i {
+                margin-top: 1rem;
                 font-weight: 500;
                 font-size: 1.3rem;
-                color: #46ce85fb;
             }
             div {
                 font-size: 0.7rem;
