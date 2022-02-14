@@ -44,6 +44,7 @@ class DataBase {
                 groupName || 'Tasks',
                 taskId
             )
+
             await setDoc(docFire, data, { merge: true })
 
             return `Doc ${taskId} Lido`
@@ -85,6 +86,24 @@ class DataBase {
             return error.message
         }
     }
+    static async readTasksGroup(collectionName, docName, filter) {
+        try {
+            let doc = collection(db, collectionName, docName, 'Group')
+            let q = query(doc, where('group', '==', filter))
+
+            const docSnap = await getDocs(q)
+
+            let result = []
+
+            docSnap.forEach((doc) => {
+                result.push(doc.data())
+            })
+
+            return result
+        } catch (error) {
+            return error.message
+        }
+    }
     static async readGroupedTasks(collectionName, docName) {
         try {
             const docSnap = await getDocs(
@@ -113,6 +132,29 @@ class DataBase {
             })
 
             return groupedTasks
+        } catch (error) {
+            return error.message
+        }
+    }
+    static async readGrouped(collectionName, docName) {
+        try {
+            const docSnap = await getDocs(
+                collection(db, collectionName, docName, 'Group')
+            )
+
+            const result = []
+
+            docSnap.forEach((doc) => {
+                result.push(doc.data())
+            })
+
+            const teste = groupBy(result, (i) => {
+                return i.group
+            })
+
+            const groupedTasksNames = Object.keys(teste).map((a) => a)
+
+            return groupedTasksNames
         } catch (error) {
             return error.message
         }

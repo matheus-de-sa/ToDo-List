@@ -34,7 +34,7 @@
                             class="textArea"
                             name=""
                             id="TextArea"
-                            rows="5"
+                            rows="3"
                         ></textarea>
                         <label
                             v-show="description.length === 0"
@@ -48,7 +48,7 @@
                 <div>
                     <label
                         class="LabelInput"
-                        :class="description.length > 0 ? 'LabelSelect' : ''"
+                        :class="group.length > 0 ? 'LabelSelect' : ''"
                         for="Group"
                         >Grupo</label
                     >
@@ -62,8 +62,13 @@
                             type="text"
                         />
                         <datalist class="dataList" id="lista">
-                            <!-- <option value="sdsa">sdsa</option>
-                            <option value="asdsad">asdsad</option> -->
+                            <option
+                                v-for="(item, index) in dataGroups"
+                                :key="index"
+                                :value="item"
+                            >
+                                {{ item }}
+                            </option>
                         </datalist>
                         <label
                             v-show="group.length === 0"
@@ -76,7 +81,56 @@
                 <div>
                     <label
                         class="LabelInput"
-                        :class="description.length > 0 ? 'LabelSelect' : ''"
+                        :class="type.length > 0 ? 'LabelSelect' : ''"
+                        for="Group"
+                        >Tipo</label
+                    >
+                    <div class="InputRadio">
+                        <div class="DivRadio">
+                            <input
+                                v-model="type"
+                                type="radio"
+                                id="task"
+                                name="task"
+                                value="task"
+                                checked
+                            />
+                            <label for="task"
+                                >Tarefa<i class="ml-1 bx bx-task"></i
+                            ></label>
+                        </div>
+                        <div class="DivRadio">
+                            <input
+                                v-model="type"
+                                type="radio"
+                                id="event"
+                                name="event"
+                                value="event"
+                                checked
+                            />
+                            <label for="event"
+                                >Evento<i class="ml-1 bx bx-calendar-event"></i
+                            ></label>
+                        </div>
+                        <div class="DivRadio">
+                            <input
+                                v-model="type"
+                                type="radio"
+                                id="reminder"
+                                name="reminder"
+                                value="reminder"
+                                checked
+                            />
+                            <label for="reminder"
+                                >Lembrete<i class="ml-1 bx bx-receipt"></i
+                            ></label>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label
+                        class="LabelInput"
+                        :class="date.length > 0 ? 'LabelSelect' : ''"
                         for="Group"
                         >Data</label
                     >
@@ -121,11 +175,13 @@ export default {
             description: '',
             group: '',
             date: '',
+            type: 'task',
+            dataGroups: [],
             loading: false,
             testData: false
         }
     },
-    mounted() {
+    async mounted() {
         let date = new window.Date().getDate()
         let month = new window.Date().getMonth()
         let year = new window.Date().getFullYear()
@@ -134,6 +190,11 @@ export default {
         month = month + 1 < 10 ? `0${month}` : month
 
         this.date = `${year}-${month}-${date}`
+
+        this.dataGroups = await db.readGrouped(
+            'Users',
+            this.$store.getters.getUser.uid
+        )
     },
     computed: {
         transition() {
@@ -162,7 +223,8 @@ export default {
                         description: this.description,
                         group: this.group || null,
                         date: Number(moment(this.date).format('x')),
-                        read: false
+                        read: false,
+                        type: this.type || 'task'
                     }
 
                     result = await db.writeTask(
@@ -207,6 +269,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.InputRadio {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .DivRadio {
+        margin: 0rem 0.5rem;
+        display: flex;
+        align-items: center;
+        input {
+        }
+        label {
+            display: flex;
+            align-items: center;
+            margin-left: 0.2rem;
+            margin-bottom: 0rem;
+        }
+    }
+}
+
 .Button {
     width: 100%;
 }

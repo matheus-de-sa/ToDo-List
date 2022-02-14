@@ -62,6 +62,22 @@ const routes = [
                 }
             },
             {
+                path: '/group/:name',
+                meta: {
+                    title: 'Grupo',
+                    Auth: true
+                },
+                component: () =>
+                    import(
+                        /* webpackChunkName: "Home" */ '../views/GroupTask.vue'
+                    ),
+                beforeEnter(to, from, next) {
+                    console.log(from)
+                    store.dispatch('addRoute', from.meta.title)
+                    next()
+                }
+            },
+            {
                 path: 'task',
                 meta: {
                     title: 'Task',

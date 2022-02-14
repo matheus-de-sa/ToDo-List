@@ -6,10 +6,14 @@
             box-shadow: 0px 0px 10px -5px #0000004b;
             overflow: hidden !important;
         "
+        @click="$router.push(`/group/${data.group}`)"
     >
         <div class="Task">
             <div class="TaskBody">
-                <h2>{{ data.group }}</h2>
+                <h2 class="mb-0">{{ data.group }}</h2>
+                <div v-if="countTasks > 0" class="ml-1 BadgeTasks">
+                    {{ countTasks }}
+                </div>
             </div>
         </div>
     </div>
@@ -29,6 +33,19 @@ export default {
     },
     data() {
         return {}
+    },
+    computed: {
+        countTasks() {
+            let result = this.data.data
+
+            let count = 0
+
+            result.forEach((task) => {
+                if (!task.read) count += 1
+            })
+
+            return count < 10 ? `0${count}` : count
+        }
     }
 }
 </script>
@@ -42,13 +59,24 @@ export default {
     width: 100vw;
     height: 5.5rem;
     padding: 0.3rem 0.7rem;
-    background-color: rgb(255, 206, 206);
+    background-color: #fff;
     display: flex;
     .TaskBody {
         width: 100vw;
         display: flex;
         justify-content: center;
         align-items: center;
+        .BadgeTasks {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 1rem;
+            background-color: #008c9e;
+            color: #fff;
+            font-weight: 800;
+        }
     }
 }
 </style>

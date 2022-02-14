@@ -113,7 +113,7 @@ export default {
             await db.setReadTask(
                 'Users',
                 this.$store.getters.getUser.uid,
-                this.data.group,
+                this.data.group ? 'Group' : null,
                 this.data.id,
                 data
             )
