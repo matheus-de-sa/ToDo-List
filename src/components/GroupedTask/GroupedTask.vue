@@ -64,7 +64,7 @@ export default {
     .TaskBody {
         width: 100vw;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         .BadgeTasks {
             display: flex;
@@ -75,7 +75,7 @@ export default {
             border-radius: 1rem;
             background-color: #008c9e;
             color: #fff;
-            font-weight: 800;
+            font-weight: 700;
         }
     }
 }

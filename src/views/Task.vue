@@ -96,7 +96,10 @@
                                 checked
                             />
                             <label for="task"
-                                >Tarefa<i class="ml-1 bx bx-task"></i
+                                >Tarefa<i
+                                    style="color: #3bb574fb"
+                                    class="ml-1 bx bx-task"
+                                ></i
                             ></label>
                         </div>
                         <div class="DivRadio">
@@ -109,7 +112,10 @@
                                 checked
                             />
                             <label for="event"
-                                >Evento<i class="ml-1 bx bx-calendar-event"></i
+                                >Evento<i
+                                    style="color: rgb(218, 33, 33)"
+                                    class="ml-1 bx bx-calendar-event"
+                                ></i
                             ></label>
                         </div>
                         <div class="DivRadio">
@@ -122,7 +128,10 @@
                                 checked
                             />
                             <label for="reminder"
-                                >Lembrete<i class="ml-1 bx bx-receipt"></i
+                                >Lembrete<i
+                                    style="color: #4d40ff"
+                                    class="ml-1 bx bx-receipt"
+                                ></i
                             ></label>
                         </div>
                     </div>
