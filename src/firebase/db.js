@@ -10,10 +10,14 @@ import {
     getDoc,
     getDocFromCache,
     where,
-    query
+    query,
+    enableIndexedDbPersistence,
+    CACHE_SIZE_UNLIMITED
 } from 'firebase/firestore'
 
 const db = getFirestore(FirebaseApp)
+
+enableIndexedDbPersistence(db)
 
 class DataBase {
     static async writeTask(collectionName, docName, groupName, taskId, data) {
