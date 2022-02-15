@@ -8,7 +8,29 @@
                     color="teal"
                     :attributes="attributes"
                     title-position="left"
-                />
+                >
+                    <template #day-popover="{ dayTitle, attributes }">
+                        <div
+                            class="text-xs text-gray-300 font-semibold text-center"
+                        >
+                            {{ dayTitle }}
+                        </div>
+                        <popover-row
+                            v-for="attr in attributes"
+                            :key="attr.key"
+                            :attribute="attr"
+                        >
+                            <span
+                                :style="
+                                    attr.customData.read
+                                        ? 'text-decoration: line-through'
+                                        : ''
+                                "
+                                >{{ attr.customData.title }}</span
+                            >
+                        </popover-row>
+                    </template>
+                </v-calendar>
                 <div
                     class="mt-3 d-flex justify-content-between aling-items-center"
                 >
@@ -44,19 +66,29 @@
                                 <i
                                     v-if="item.type === 'task'"
                                     style="color: #3bb574fb"
+                                    :class="item.read ? 'opacity-50' : ''"
                                     class="mr-1 bx bx-task"
                                 ></i>
                                 <i
                                     v-if="item.type === 'event'"
                                     style="color: rgb(218, 33, 33)"
                                     class="mr-1 bx bx-calendar-event"
+                                    :class="item.read ? 'opacity-50' : ''"
                                 ></i>
                                 <i
                                     v-if="item.type === 'reminder'"
                                     style="color: #4d40ff"
                                     class="mr-1 bx bx-receipt"
+                                    :class="item.read ? 'opacity-50' : ''"
                                 ></i>
-                                {{ item.title }}
+                                <span
+                                    :style="
+                                        item.read
+                                            ? 'text-decoration: line-through'
+                                            : ''
+                                    "
+                                    >{{ item.title }}</span
+                                >
                             </div>
                         </div>
                     </div>
@@ -67,15 +99,17 @@
 </template>
 
 <script>
-import db from '../firebase/db'
+import PopoverRow from 'v-calendar/lib/components/popover-row.umd.min'
 import moment from 'moment'
 import { groupBy } from 'lodash'
 
 export default {
     name: 'Calendar',
+    components: {
+        PopoverRow
+    },
     data() {
         return {
-            dates: [],
             day: '',
             month: '',
             attributes: [
@@ -104,19 +138,14 @@ export default {
     async mounted() {
         this.month = new Date().getMonth() + 1
 
-        let data = await db.readAllTasks(
-            'Users',
-            this.$store.getters.getUser.uid
-        )
-
-        this.dates = data
+        let data = this.allTasks
 
         this.attributes = [
             ...data.map((todo) => ({
                 dates: todo.date,
                 dot: {
                     color: todo.color,
-                    class: todo.read ? 'opacity-30' : ''
+                    class: todo.read ? 'opacity-50' : ''
                 },
                 popover: {
                     label: todo.title,
@@ -127,8 +156,11 @@ export default {
         ]
     },
     computed: {
+        allTasks() {
+            return this.$store.getters.getAllTasks
+        },
         tasks() {
-            let dates = this.dates
+            let dates = this.allTasks
             let result = []
 
             dates = dates.sort((a, b) => a.date - b.date)
@@ -175,6 +207,12 @@ export default {
     }
 }
 </script>
+
+<style>
+.opacity-50 {
+    opacity: 50%;
+}
+</style>
 
 <style lang="scss" scoped>
 .month {

@@ -1,14 +1,14 @@
 module.exports = {
     pwa: {
         name: 'ToDoList',
-        themeColor: '#4DBA87',
+        themeColor: '#fff',
         msTileColor: '#000000',
         appleMobileWebAppCapable: 'yes',
         appleMobileWebAppStatusBarStyle: 'black',
-        workboxPluginMode: 'InjectManifest',
-        workboxOptions: {
-            swSrc: 'dev/sw.js'
-        },
+        // workboxPluginMode: 'InjectManifest',
+        // workboxOptions: {
+        //     swSrc: 'dev/sw.js'
+        // },
         icons: {
             favicon32: 'img/icons/favicon-32x32.png',
             favicon16: 'img/icons/favicon-16x16.png',

@@ -17,27 +17,15 @@ import GroupedTask from '../components/GroupedTask/GroupedTask.vue'
 export default {
     name: 'Home',
     data() {
-        return {
-            tasks: [],
-            groupedTasks: []
-        }
+        return {}
     },
     components: { Task, GroupedTask },
-    async mounted() {
-        this.tasks = await db.readTasks(
-            'Users',
-            this.$store.getters.getUser.uid
-        )
-        this.groupedTasks = await this.getGroupedTasks()
-    },
-    methods: {
-        async getGroupedTasks() {
-            let data = await db.readGroupedTasks(
-                'Users',
-                this.$store.getters.getUser.uid
-            )
-
-            return data
+    computed: {
+        tasks() {
+            return this.$store.getters.getTasks
+        },
+        groupedTasks() {
+            return this.$store.getters.getGroupedTasks
         }
     }
 }

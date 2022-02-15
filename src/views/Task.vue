@@ -185,7 +185,6 @@ export default {
             group: '',
             date: '',
             type: 'task',
-            dataGroups: [],
             loading: false,
             testData: false
         }
@@ -199,13 +198,11 @@ export default {
         month = month + 1 < 10 ? `0${month}` : month
 
         this.date = `${year}-${month}-${date}`
-
-        this.dataGroups = await db.readGrouped(
-            'Users',
-            this.$store.getters.getUser.uid
-        )
     },
     computed: {
+        dataGroups() {
+            return this.$store.getters.getGroups
+        },
         transition() {
             let route = this.$store.getters.getRoute
             let transition = 'fade-top'

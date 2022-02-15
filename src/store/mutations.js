@@ -9,5 +9,17 @@ export default {
     },
     addRoute(state, route) {
         state.route = route
+    },
+    addGroups(state, groups) {
+        state.groups = groups
+    },
+    addTasks(state, tasks) {
+        state.tasks = tasks
+    },
+    addGroupedTasks(state, tasks) {
+        state.groupedTasks = tasks
+    },
+    addAllTasks(state, tasks) {
+        state.allTasks = tasks
     }
 }

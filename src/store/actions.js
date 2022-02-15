@@ -9,5 +9,17 @@ export default {
     },
     addRoute({ commit }, route) {
         commit('addRoute', route)
+    },
+    addGroups({ commit }, groups) {
+        commit('addGroups', groups)
+    },
+    addTasks({ commit }, tasks) {
+        commit('addTasks', tasks)
+    },
+    addGroupedTasks({ commit }, tasks) {
+        commit('addGroupedTasks', tasks)
+    },
+    addAllTasks({ commit }, tasks) {
+        commit('addAllTasks', tasks)
     }
 }

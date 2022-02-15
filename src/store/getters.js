@@ -9,5 +9,17 @@ export default {
     },
     getRoute(state) {
         return state.route
+    },
+    getGroups(state) {
+        return state.groups
+    },
+    getTasks(state) {
+        return state.tasks
+    },
+    getGroupedTasks(state) {
+        return state.groupedTasks
+    },
+    getAllTasks(state) {
+        return state.allTasks
     }
 }

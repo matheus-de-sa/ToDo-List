@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store/index'
 import FirebaseApp from '../firebase/index'
+import db from '../firebase/db'
 import { getAuth } from 'firebase/auth'
 
 const Auth = getAuth(FirebaseApp)
@@ -42,8 +43,20 @@ const routes = [
         },
         component: () =>
             import(/* webpackChunkName: "Layout" */ '../layouts/Layout.vue'),
-        beforeEnter(to, from, next) {
+        async beforeEnter(to, from, next) {
             store.dispatch('authUser', Auth.currentUser)
+
+            let user = ['Users', store.getters.getUser.uid]
+
+            const groups = await db.readGrouped(user[0], user[1])
+            const tasks = await db.readTasks(user[0], user[1])
+            const groupedTasks = await db.readGroupedTasks(user[0], user[1])
+            const allTasks = await db.readAllTasks(user[0], user[1])
+
+            store.dispatch('addGroups', groups)
+            store.dispatch('addTasks', tasks)
+            store.dispatch('addGroupedTasks', groupedTasks)
+            store.dispatch('addAllTasks', allTasks)
             next()
         },
         children: [

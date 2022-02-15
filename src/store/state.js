@@ -1,9 +1,10 @@
 export default {
     route: '',
     authUser: {},
-    groupedTasks: [],
+    groups: [],
     tasks: [],
-    calendar: []
+    groupedTasks: [],
+    allTasks: []
 }
 
 
