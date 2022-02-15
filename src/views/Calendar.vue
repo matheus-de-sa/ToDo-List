@@ -1,5 +1,5 @@
 <template>
-    <div data-aos="fade-right">
+    <div>
         <div class="Calendar">
             <div class="CardCalendar">
                 <v-calendar
@@ -54,7 +54,7 @@
                     </div>
                 </div>
                 <div class="mt-3">
-                    <div class="d-flex month">{{ months[month].name }}</div>
+                    <div class="d-flex month">{{ months[month] ? months[month].name : '' }}</div>
                     <div v-for="(day, index) in tasks" :key="index">
                         <div class="d-flex flex-column">
                             <div class="d-flex my-2 day">{{ day.day }}</div>

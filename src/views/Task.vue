@@ -1,5 +1,5 @@
 <template>
-    <div :data-aos="transition">
+    <div>
         <div class="Task">
             <div class="CardAddTask">
                 <h5>Criar Tarefa</h5>

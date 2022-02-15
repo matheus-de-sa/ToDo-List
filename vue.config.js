@@ -3,7 +3,6 @@ module.exports = {
         name: 'ToDoList',
         themeColor: '#FFFFFF',
         msTileColor: '#000000',
-        display: 'fullscreen',
         appleMobileWebAppCapable: 'yes',
         appleMobileWebAppStatusBarStyle: 'black',
         // workboxPluginMode: 'InjectManifest',

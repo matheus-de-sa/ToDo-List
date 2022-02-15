@@ -1,5 +1,4 @@
 import { groupBy } from 'lodash'
-import moment from 'moment'
 import FirebaseApp from './index'
 import {
     getFirestore,
