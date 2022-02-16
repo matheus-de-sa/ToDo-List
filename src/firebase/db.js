@@ -8,6 +8,7 @@ import {
     setDoc,
     getDocs,
     getDoc,
+    deleteDoc,
     getDocFromCache,
     where,
     query,
@@ -34,6 +35,23 @@ class DataBase {
             await setDoc(docFire, data)
 
             return `Doc ${taskId} foi Criado`
+        } catch (error) {
+            return error
+        }
+    }
+    static async delTask(collectionName, docName, groupName, taskId) {
+        try {
+            let docFire = doc(
+                db,
+                collectionName,
+                docName,
+                groupName || 'Tasks',
+                taskId
+            )
+
+            await deleteDoc(docFire)
+
+            return `Doc ${taskId} Lido`
         } catch (error) {
             return error
         }

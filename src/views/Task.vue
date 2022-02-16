@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :data-aos="transition">
         <div class="Task">
             <div class="CardAddTask">
                 <h5>Criar Tarefa</h5>
@@ -32,15 +32,13 @@
                             @change="testDataInput"
                             v-model="description"
                             class="textArea"
-                            name=""
                             id="TextArea"
                             rows="3"
                         ></textarea>
                         <label
                             v-show="description.length === 0"
                             class="fontTextAreaEmpty"
-                            for="TextArea
-                    "
+                            for="TextArea"
                             >Digite a descrição</label
                         >
                     </div>
@@ -242,6 +240,20 @@ export default {
                     )
 
                     if (result) {
+                        let user = ['Users', this.$store.getters.getUser.uid]
+                        const groups = await db.readGrouped(user[0], user[1])
+                        const tasks = await db.readTasks(user[0], user[1])
+                        const groupedTasks = await db.readGroupedTasks(
+                            user[0],
+                            user[1]
+                        )
+                        const allTasks = await db.readAllTasks(user[0], user[1])
+
+                        this.$store.dispatch('addGroups', groups)
+                        this.$store.dispatch('addTasks', tasks)
+                        this.$store.dispatch('addGroupedTasks', groupedTasks)
+                        this.$store.dispatch('addAllTasks', allTasks)
+
                         this.loading = false
                         this.testData = false
                         this.title = ''

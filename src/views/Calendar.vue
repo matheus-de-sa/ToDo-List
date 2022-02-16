@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div data-aos="fade-right">
         <div class="Calendar">
             <div class="CardCalendar">
                 <v-calendar
@@ -54,41 +54,51 @@
                     </div>
                 </div>
                 <div class="mt-3">
-                    <div class="d-flex month">{{ months[month] ? months[month].name : '' }}</div>
+                    <div class="d-flex month">
+                        {{ months[month] ? months[month].name : '' }}
+                    </div>
                     <div v-for="(day, index) in tasks" :key="index">
                         <div class="d-flex flex-column">
                             <div class="d-flex my-2 day">{{ day.day }}</div>
-                            <div
-                                class="d-flex align-items-center ml-2"
-                                v-for="item in day.data"
-                                :key="item.id"
-                            >
-                                <i
-                                    v-if="item.type === 'task'"
-                                    style="color: #3bb574fb"
-                                    :class="item.read ? 'opacity-50' : ''"
-                                    class="mr-1 bx bx-task"
-                                ></i>
-                                <i
-                                    v-if="item.type === 'event'"
-                                    style="color: rgb(218, 33, 33)"
-                                    class="mr-1 bx bx-calendar-event"
-                                    :class="item.read ? 'opacity-50' : ''"
-                                ></i>
-                                <i
-                                    v-if="item.type === 'reminder'"
-                                    style="color: #4d40ff"
-                                    class="mr-1 bx bx-receipt"
-                                    :class="item.read ? 'opacity-50' : ''"
-                                ></i>
-                                <span
-                                    :style="
-                                        item.read
-                                            ? 'text-decoration: line-through'
-                                            : ''
-                                    "
-                                    >{{ item.title }}</span
+                            <div v-if="day.data !== undefined">
+                                <div
+                                    class="d-flex align-items-center ml-2"
+                                    v-for="item in day.data"
+                                    :key="item.id"
                                 >
+                                    <i
+                                        v-if="item.type === 'task'"
+                                        style="color: #3bb574fb"
+                                        :class="item.read ? 'opacity-50' : ''"
+                                        class="mr-1 bx bx-task"
+                                    ></i>
+                                    <i
+                                        v-if="item.type === 'event'"
+                                        style="color: rgb(218, 33, 33)"
+                                        class="mr-1 bx bx-calendar-event"
+                                        :class="item.read ? 'opacity-50' : ''"
+                                    ></i>
+                                    <i
+                                        v-if="item.type === 'reminder'"
+                                        style="color: #4d40ff"
+                                        class="mr-1 bx bx-receipt"
+                                        :class="item.read ? 'opacity-50' : ''"
+                                    ></i>
+                                    <span
+                                        :style="
+                                            item.read
+                                                ? 'text-decoration: line-through'
+                                                : ''
+                                        "
+                                        >{{ item.title }}</span
+                                    >
+                                </div>
+                            </div>
+                            <div v-else-if="new Date().getDate() < day.day">
+                                Adicionar Tarefa
+                            </div>
+                            <div v-else>
+                                Você não teve ocorrências neste dia
                             </div>
                         </div>
                     </div>

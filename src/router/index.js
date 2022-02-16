@@ -69,13 +69,12 @@ const routes = [
                 component: () =>
                     import(/* webpackChunkName: "Home" */ '../views/Home.vue'),
                 beforeEnter(to, from, next) {
-                    console.log(from)
                     store.dispatch('addRoute', from.meta.title)
                     next()
                 }
             },
             {
-                path: '/group/:name',
+                path: 'group/:name',
                 meta: {
                     title: 'Grupo',
                     Auth: true
@@ -85,7 +84,6 @@ const routes = [
                         /* webpackChunkName: "Home" */ '../views/GroupTask.vue'
                     ),
                 beforeEnter(to, from, next) {
-                    console.log(from)
                     store.dispatch('addRoute', from.meta.title)
                     next()
                 }
@@ -139,10 +137,10 @@ router.beforeEach((to, from, next) => {
     }
 
     if (Auth.currentUser !== null && to.path === '/authenticate') {
-        next('/')
+        next()
     }
     if (Auth.currentUser !== null && to.path === '/register') {
-        next('/')
+        next()
     }
 })
 

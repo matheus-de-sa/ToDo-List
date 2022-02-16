@@ -9,7 +9,7 @@
                 class="NavList"
             >
                 <i class="bx bx-list-ul"></i>
-                <span v-if="route === 'Home'">Lista</span>
+                <span v-show="route === 'Home'">Lista</span>
             </div>
             <div id="Task" @click="changeRoute('/task')" class="NavAdd">
                 <div
@@ -26,7 +26,7 @@
                 class="NavCalendar"
             >
                 <i class="bx bx-calendar"></i>
-                <span v-if="route === 'Calendar'">Calendário</span>
+                <span v-show="route === 'Calendar'">Calendário</span>
             </div>
         </div>
     </div>
@@ -42,23 +42,7 @@ export default {
     mounted() {
         this.route = this.$route.meta.title
 
-        if (this.route === 'Calendar') {
-            let { left } = document
-                .getElementById('Calendar')
-                .getBoundingClientRect()
-
-            document.getElementById('activeIcon').style.left = `${left}px`
-        } else if (this.route === 'Home') {
-            let { left } = document
-                .getElementById('Home')
-                .getBoundingClientRect()
-            document.getElementById('activeIcon').style.left = `${left}px`
-        } else {
-            let { left } = document
-                .getElementById('Task')
-                .getBoundingClientRect()
-            document.getElementById('activeIcon').style.left = `${left + 10}px`
-        }
+        this.changeRoute(this.route === 'Home' ? '/' : this.route)
     },
     watch: {
         $route() {
@@ -95,7 +79,7 @@ export default {
                     .getBoundingClientRect()
 
                 document.getElementById('activeIcon').style.left = `${left}px`
-            } else if (route === '') {
+            } else if (route === '/') {
                 let { left } = document
                     .getElementById('Home')
                     .getBoundingClientRect()
@@ -176,6 +160,7 @@ export default {
     }
     span {
         font-size: 0.8rem;
+        transition: all 0.4s ease;
     }
 }
 
@@ -191,6 +176,7 @@ export default {
     }
     span {
         font-size: 0.8rem;
+        transition: all 0.4s ease;
     }
 }
 

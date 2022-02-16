@@ -113,7 +113,25 @@ export default {
         updateCarousel(payload) {
             this.carouselData = payload.currentSlide
         },
-        delTask() {
+        async delTask() {
+            await db.delTask(
+                'Users',
+                this.$store.getters.getUser.uid,
+                this.data.group ? 'Group' : null,
+                this.data.id
+            )
+
+            let user = ['Users', this.$store.getters.getUser.uid]
+            const groups = await db.readGrouped(user[0], user[1])
+            const tasks = await db.readTasks(user[0], user[1])
+            const groupedTasks = await db.readGroupedTasks(user[0], user[1])
+            const allTasks = await db.readAllTasks(user[0], user[1])
+
+            this.$store.dispatch('addGroups', groups)
+            this.$store.dispatch('addTasks', tasks)
+            this.$store.dispatch('addGroupedTasks', groupedTasks)
+            this.$store.dispatch('addAllTasks', allTasks)
+
             setTimeout(() => {
                 this.slidePrev()
             }, 800)
@@ -123,7 +141,7 @@ export default {
                 read: true
             }
 
-            if (this.data.read) {
+            if (this.read) {
                 data.read = false
             }
 
@@ -136,13 +154,12 @@ export default {
             )
 
             setTimeout(() => {
-                if (this.data.read) {
+                this.slideNext()
+                if (this.read) {
                     this.read = false
                 } else {
                     this.read = true
                 }
-
-                this.slideNext()
             }, 800)
         }
     }
@@ -168,7 +185,7 @@ export default {
         .TaskText {
             text-align: start;
             h6 {
-                font-weight: 500;
+                font-weight: 600;
                 font-size: 1rem;
                 word-break: break-all;
             }
@@ -186,6 +203,7 @@ export default {
             }
             div {
                 font-size: 0.7rem;
+                font-weight: 600;
             }
         }
     }

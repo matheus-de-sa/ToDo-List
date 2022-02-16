@@ -1,5 +1,5 @@
 <template>
-    <div class="Task">
+    <div data-aos="fade-left" class="Task">
         <Task v-for="item in tasks" :key="item.id" :data="item"></Task>
     </div>
 </template>
