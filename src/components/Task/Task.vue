@@ -127,13 +127,13 @@ export default {
             const groupedTasks = await db.readGroupedTasks(user[0], user[1])
             const allTasks = await db.readAllTasks(user[0], user[1])
 
-            this.$store.dispatch('addGroups', groups)
-            this.$store.dispatch('addTasks', tasks)
-            this.$store.dispatch('addGroupedTasks', groupedTasks)
-            this.$store.dispatch('addAllTasks', allTasks)
-
             setTimeout(() => {
                 this.slidePrev()
+
+                this.$store.dispatch('addGroups', groups)
+                this.$store.dispatch('addTasks', tasks)
+                this.$store.dispatch('addGroupedTasks', groupedTasks)
+                this.$store.dispatch('addAllTasks', allTasks)
             }, 800)
         },
         async readTask() {

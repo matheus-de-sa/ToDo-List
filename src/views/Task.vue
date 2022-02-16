@@ -13,6 +13,7 @@
                     <vs-input
                         @change="testDataInput"
                         id="Title"
+                        autocomplete="off"
                         primary
                         type="text"
                         v-model="title"
@@ -29,6 +30,7 @@
                     >
                     <div class="LabelTextArea">
                         <textarea
+                            autocomplete="off"
                             @change="testDataInput"
                             v-model="description"
                             class="textArea"
@@ -52,6 +54,7 @@
                     >
                     <div class="InputLabel">
                         <input
+                            autocomplete="off"
                             @change="testDataInput"
                             id="Group"
                             v-model="group"
@@ -216,7 +219,6 @@ export default {
             try {
                 if (this.testData) {
                     this.loading = true
-                    let result = null
 
                     let crypto = require('crypto')
                     let id = 'a' + crypto.randomBytes(8).toString('hex')
@@ -231,7 +233,7 @@ export default {
                         type: this.type || 'task'
                     }
 
-                    result = await db.writeTask(
+                    let result = await db.writeTask(
                         'Users',
                         this.$store.getters.getUser.uid,
                         this.group || null,
@@ -248,6 +250,11 @@ export default {
                             user[1]
                         )
                         const allTasks = await db.readAllTasks(user[0], user[1])
+
+                        console.log(groups)
+                        console.log(tasks)
+                        console.log(groupedTasks)
+                        console.log(allTasks)
 
                         this.$store.dispatch('addGroups', groups)
                         this.$store.dispatch('addTasks', tasks)

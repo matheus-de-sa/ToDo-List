@@ -1,6 +1,7 @@
 import { groupBy } from 'lodash'
 import FirebaseApp from './index'
 import {
+    initializeFirestore,
     getFirestore,
     doc,
     collection,
@@ -9,21 +10,32 @@ import {
     getDocs,
     getDoc,
     deleteDoc,
-    getDocFromCache,
+    getDocsFromCache,
     where,
     query,
     enableIndexedDbPersistence,
     CACHE_SIZE_UNLIMITED
 } from 'firebase/firestore'
 
-const db = getFirestore(FirebaseApp)
+const db = initializeFirestore(FirebaseApp, {
+    cacheSizeBytes: CACHE_SIZE_UNLIMITED
+})
 
 enableIndexedDbPersistence(db)
+
+function dbWritePromice(functionPromice) {
+    if (window.navigator.onLine) {
+        console.log('Online')
+        return functionPromice
+    } else {
+        console.log('Off')
+        return Promise.resolve()
+    }
+}
 
 class DataBase {
     static async writeTask(collectionName, docName, groupName, taskId, data) {
         try {
-            let result = null
             let docFire = doc(
                 db,
                 collectionName,
@@ -32,11 +44,11 @@ class DataBase {
                 taskId
             )
 
-            await setDoc(docFire, data)
+            await dbWritePromice(setDoc(docFire, data))
 
-            return `Doc ${taskId} foi Criado`
+            return `Doc ${data.id} foi Criado`
         } catch (error) {
-            return error
+            return error.message
         }
     }
     static async delTask(collectionName, docName, groupName, taskId) {
@@ -49,7 +61,7 @@ class DataBase {
                 taskId
             )
 
-            await deleteDoc(docFire)
+            await dbWritePromice(deleteDoc(docFire))
 
             return `Doc ${taskId} Lido`
         } catch (error) {
@@ -66,7 +78,7 @@ class DataBase {
                 taskId
             )
 
-            await setDoc(docFire, data, { merge: true })
+            await dbWritePromice(setDoc(docFire, data, { merge: true }))
 
             return `Doc ${taskId} Lido`
         } catch (error) {
@@ -92,9 +104,17 @@ class DataBase {
     }
     static async readTasks(collectionName, docName) {
         try {
-            const docSnap = await getDocs(
-                collection(db, collectionName, docName, 'Tasks')
-            )
+            let docSnap = []
+
+            if (window.navigator.onLine) {
+                docSnap = await getDocs(
+                    collection(db, collectionName, docName, 'Tasks')
+                )
+            } else {
+                docSnap = await getDocsFromCache(
+                    collection(db, collectionName, docName, 'Tasks')
+                )
+            }
 
             let result = []
 
@@ -112,7 +132,13 @@ class DataBase {
             let doc = collection(db, collectionName, docName, 'Group')
             let q = query(doc, where('group', '==', filter))
 
-            const docSnap = await getDocs(q)
+            let docSnap = []
+
+            if (window.navigator.onLine) {
+                docSnap = await getDocs(q)
+            } else {
+                docSnap = await getDocsFromCache(q)
+            }
 
             let result = []
 
@@ -127,9 +153,17 @@ class DataBase {
     }
     static async readGroupedTasks(collectionName, docName) {
         try {
-            const docSnap = await getDocs(
-                collection(db, collectionName, docName, 'Group')
-            )
+            let docSnap = []
+
+            if (window.navigator.onLine) {
+                docSnap = await getDocs(
+                    collection(db, collectionName, docName, 'Group')
+                )
+            } else {
+                docSnap = await getDocsFromCache(
+                    collection(db, collectionName, docName, 'Group')
+                )
+            }
 
             const result = []
 
@@ -159,9 +193,17 @@ class DataBase {
     }
     static async readGrouped(collectionName, docName) {
         try {
-            const docSnap = await getDocs(
-                collection(db, collectionName, docName, 'Group')
-            )
+            let docSnap = []
+
+            if (window.navigator.onLine) {
+                docSnap = await getDocs(
+                    collection(db, collectionName, docName, 'Group')
+                )
+            } else {
+                docSnap = await getDocsFromCache(
+                    collection(db, collectionName, docName, 'Group')
+                )
+            }
 
             const result = []
 
@@ -189,9 +231,19 @@ class DataBase {
                 collection(db, collectionName, docName, 'Tasks')
             )
 
-            const docInGroup = await getDocs(queryGroup)
+            let docInGroup = []
 
-            const docInTasks = await getDocs(queryTasks)
+            let docInTasks = []
+
+            if (window.navigator.onLine) {
+                docInGroup = await getDocs(queryGroup)
+
+                docInTasks = await getDocs(queryTasks)
+            } else {
+                docInGroup = await getDocsFromCache(queryGroup)
+
+                docInTasks = await getDocsFromCache(queryTasks)
+            }
 
             const docs = []
 
