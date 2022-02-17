@@ -1,4 +1,38 @@
-// Cores do Projeto
+@import url('../icons/css/boxicons.min.css');
+
+:root {
+    --color-background-body: rgba(230, 230, 230, 0.692);
+    --color-background-read: rgb(220, 220, 221);
+    --color-background-white: #fff;
+    --color-background-purple: #4d40ff;
+    --color-background-blue: #008c9e;
+    --color-background-green: #3bb574fb;
+    --color-background-red: rgb(218, 33, 33);
+    --color-blue: #008c9e;
+    --color-green: #3bb573;
+    --color-red: rgb(218, 33, 33);
+    --color-shadow-big: '';
+    --color-shadow: '';
+    --color-text: #000;
+    --color-white: #fff;
+}
+
+.dark-mode:root {
+    --color-background-body: rgba(22, 22, 22, 0.9);
+    --color-background-read: rgba(31, 31, 31, 0.534);
+    --color-background-white: rgb(31, 31, 31);
+    --color-background-purple: #4d40ff;
+    --color-background-blue: #33e7ff;
+    --color-background-green: #3bb574fb;
+    --color-background-red: rgb(218, 33, 33);
+    --color-blue: #33e7ff;
+    --color-green: #3bb573;
+    --color-red: rgb(218, 33, 33);
+    --color-shadow-big: '';
+    --color-shadow: '';
+    --color-text: #fff;
+    --color-white: #fff;
+}
 
 $color-primary: rgb(76, 99, 233);
 $color-primary-light: #00b4cc;
@@ -7,5 +41,3 @@ $color-success-light: green;
 $color-dark: #343838;
 $color-danger: #fb0a32;
 $color-warning: 'rgb(255, 130, 0)';
-
-// Definições Globais

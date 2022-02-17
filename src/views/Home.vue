@@ -22,7 +22,7 @@ export default {
     components: { Task, GroupedTask },
     computed: {
         tasks() {
-            return this.$store.getters.getTasks
+            return this.$store.getters.getTasks.sort((a, b) => a.date - b.date)
         },
         groupedTasks() {
             return this.$store.getters.getGroupedTasks

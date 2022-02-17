@@ -2,7 +2,7 @@
     <div class="header">
         <img src="../../assets/img/icon-512x512.png" />
         <div>
-            <div class="User">
+            <div @click="css" class="User">
                 <img
                     v-if="User.photoURL"
                     :src="User.photoURL"
@@ -34,6 +34,12 @@ export default {
 
             return `${name[0][0]}${name[1][0]}`
         }
+    },
+    methods: {
+        css() {
+            const html = document.querySelector('html')
+            html.classList.toggle('dark-mode')
+        }
     }
 }
 </script>
@@ -49,7 +55,7 @@ export default {
     top: 0;
     width: 100vw;
     height: 3rem;
-    background: rgb(255, 255, 255);
+    background: var(--color-background-white);
     box-shadow: 0px 7px 15px -7px #0000004b;
     img {
         width: 4rem;
@@ -57,7 +63,7 @@ export default {
 }
 
 .User {
-    border: 2px solid #008c9e;
+    border: 2px solid var(--color-blue);
     padding: 1rem;
     width: 2rem;
     height: 2rem;

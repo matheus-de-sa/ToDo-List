@@ -317,10 +317,6 @@ export default {
     width: 100%;
 }
 
-.dataList {
-    background-color: red;
-}
-
 .InputLabel {
     position: relative;
     .inputPerso {

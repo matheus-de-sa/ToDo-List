@@ -102,7 +102,7 @@ export default {
     position: absolute;
     left: 0px;
     bottom: 0;
-    background-color: #008c9e;
+    background-color: var(--color-background-blue);
     width: 4rem;
     height: 0.3rem;
     border-top-left-radius: 1rem;
@@ -116,7 +116,7 @@ export default {
     bottom: 0;
     width: 100vw;
     height: 3rem;
-    background: rgb(255, 255, 255);
+    background: var(--color-background-white);
     box-shadow: 0px -7px 15px -7px #0000004b;
 }
 .Nav {
@@ -132,7 +132,7 @@ export default {
     align-items: center;
     justify-content: center;
     font-size: 3.5rem;
-    background: #008c9e;
+    background: var(--color-background-blue);
     padding: 0.5rem;
     border-top-left-radius: 50rem;
     border-top-right-radius: 50rem;
@@ -142,7 +142,8 @@ export default {
 
 .Icon {
     display: flex;
-    background: rgb(255, 255, 255);
+    background: var(--color-background-white);
+    color: var(--color-text);
     border-top-left-radius: 50rem;
     border-top-right-radius: 50rem;
     padding: 0.5rem;
@@ -154,6 +155,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    color: var(--color-text);
     i {
         font-size: 1.5rem;
         line-height: 1rem !important;
@@ -170,6 +172,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    color: var(--color-text);
     i {
         font-size: 1.4rem;
         line-height: 1rem !important;
@@ -182,13 +185,13 @@ export default {
 
 .linkActive {
     transition: all 0.4s ease;
-    color: #008c9e;
+    color: var(--color-blue);
 }
 
 .linkActiveAdd {
     transition: all 0.4s ease;
-    box-shadow: inset 0 0 0 2.5rem #008c9e;
+    box-shadow: inset 0 0 0 2.5rem var(--color-blue);
     background: none;
-    color: #fff;
+    color: var(--color-white);
 }
 </style>

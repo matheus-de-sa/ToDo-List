@@ -5,8 +5,10 @@
 </template>
 
 <style lang="scss">
+@import url('./assets/scss/style.scss');
+
 body {
-    background-color: rgba(230, 230, 230, 0.692);
+    background-color: var(--color-background-body) !important;
 }
 
 #app {

@@ -15,10 +15,7 @@
         :trimWhiteSpace="true"
     >
         <slide>
-            <div
-                class="ReadTask"
-                :style="!read ? '' : 'background-color: #4D40FF'"
-            >
+            <div class="ReadTask" :class="!read ? '' : 'ReadTaskOk'">
                 <div v-if="!read" class="ReadBody">
                     <div>Concluído</div>
                     <div><i class="bx bx-check-double"></i></div>
@@ -30,10 +27,7 @@
             </div>
         </slide>
         <slide>
-            <div
-                class="Task"
-                :style="read ? 'background-color: rgb(224, 224, 240)' : ''"
-            >
+            <div class="Task" :class="!read ? '' : 'TaskRead'">
                 <div class="TaskBody">
                     <div class="TaskText" :class="read ? 'Read' : ''">
                         <h6>{{ data.title }}</h6>
@@ -171,13 +165,22 @@ export default {
     text-decoration: line-through;
 }
 
+.ReadTaskOk {
+    background-color: var(--color-background-purple) !important;
+}
+
+.TaskRead {
+    background-color: var(--color-background-read) !important;
+}
+
 .Task {
     width: 100vw;
     height: 5.5rem;
     padding: 0.3rem 0.7rem;
-    background-color: #fff;
+    background-color: var(--color-background-white);
     display: flex;
     .TaskBody {
+        color: var(--color-text);
         width: 100vw;
         display: flex;
         justify-content: space-between;
@@ -185,7 +188,7 @@ export default {
         .TaskText {
             text-align: start;
             h6 {
-                font-weight: 600;
+                font-weight: 550;
                 font-size: 1rem;
                 word-break: break-all;
             }
@@ -203,14 +206,14 @@ export default {
             }
             div {
                 font-size: 0.7rem;
-                font-weight: 600;
+                font-weight: 500;
             }
         }
     }
 }
 
 .ReadTask {
-    background-color: #46ce85fb;
+    background-color: var(--color-background-green);
     width: 100vw;
     height: 5.5rem;
     padding: 1rem 4rem;
@@ -233,7 +236,7 @@ export default {
 }
 
 .DelTask {
-    background-color: rgb(221, 63, 63);
+    background-color: var(--color-background-red);
     width: 100vw;
     height: 5.5rem;
     padding: 1rem 4rem;
@@ -252,86 +255,6 @@ export default {
         i {
             font-size: 1.3rem;
         }
-    }
-}
-
-.hooper {
-    height: none !important;
-}
-.IconReadTada {
-    display: none;
-}
-.IconTrashTada {
-    display: none;
-}
-
-.NotificationTrash {
-    border-bottom-left-radius: 1rem;
-    border-top-left-radius: 1rem;
-    padding: 0.3rem 1rem;
-    margin-right: 1rem;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: end;
-    background-color: rgb(218, 33, 33);
-    color: #fff;
-    text-align: end;
-    &:hover > .IconTrashTada {
-        display: block !important;
-    }
-    &:hover > .IconTrash {
-        display: none;
-    }
-}
-.NotificationRead {
-    border-bottom-right-radius: 1rem;
-    border-top-right-radius: 1rem;
-    padding: 0.3rem 1rem;
-    margin-left: 1rem;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: start;
-    background-color: #3bb574fb;
-    color: #fff;
-    text-align: start;
-    &:hover > .IconReadTada {
-        display: block !important;
-    }
-    &:hover > .IconRead {
-        display: none;
-    }
-}
-.NotificationTop {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    .Title {
-        font-size: 0.9rem;
-        font-weight: 550;
-        color: rgb(44, 44, 44);
-    }
-    .Date {
-        font-size: 0.9rem;
-        font-weight: 550;
-        color: rgb(44, 44, 44);
-    }
-}
-.NotificationFooter {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    .Text {
-        font-size: 0.8rem;
-        width: 90%;
-        font-weight: 400;
-    }
-    .Icon {
-        text-align: end;
-        color: #3bb573;
-        width: 10%;
     }
 }
 </style>

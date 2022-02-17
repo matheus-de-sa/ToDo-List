@@ -8,14 +8,19 @@ import VueMq from 'vue-mq'
 import FirebaseApp from './firebase/index'
 import VCalendar from 'v-calendar'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 import './registerServiceWorker'
 import 'vuesax/dist/vuesax.css'
 import 'hooper/dist/hooper.css'
 import './assets/scss/style.scss'
 import './utils/directives'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/js/bootstrap.js'
 
 const Auth = getAuth(FirebaseApp)
 
+AOS.init()
 Vue.use(VCalendar)
 Vue.use(VueI18n)
 Vue.use(Vuesax, {
