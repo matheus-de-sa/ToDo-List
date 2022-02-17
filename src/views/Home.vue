@@ -1,5 +1,5 @@
 <template>
-    <div data-aos="fade-left" class="Task">
+    <div class="Task">
         <GroupedTask
             v-for="item in groupedTasks"
             :key="item.id"

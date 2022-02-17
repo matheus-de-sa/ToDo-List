@@ -4,7 +4,6 @@
         style="
             height: 5.5rem;
             box-shadow: 0px 0px 10px -5px #0000004b;
-            overflow: hidden !important;
         "
         @click="$router.push(`/group/${data.group}`)"
     >

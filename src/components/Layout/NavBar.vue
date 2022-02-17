@@ -2,7 +2,7 @@
     <div class="header">
         <img src="../../assets/img/icon-512x512.png" />
         <div>
-            <div @click="css" class="User">
+            <div class="User">
                 <img
                     v-if="User.photoURL"
                     :src="User.photoURL"
@@ -11,12 +11,14 @@
                 <div v-else>
                     {{ Name }}
                 </div>
+                <DropDown></DropDown>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import DropDown from './DropDown.vue'
 export default {
     data() {
         return {}
@@ -27,11 +29,8 @@ export default {
         },
         Name() {
             let { displayName } = this.User
-
             displayName = displayName.replace(' de ', ' ')
-
             let name = displayName.split(' ')
-
             return `${name[0][0]}${name[1][0]}`
         }
     },
@@ -40,7 +39,8 @@ export default {
             const html = document.querySelector('html')
             html.classList.toggle('dark-mode')
         }
-    }
+    },
+    components: { DropDown }
 }
 </script>
 
@@ -71,6 +71,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
     img {
         width: 2rem;
         height: 2rem;
