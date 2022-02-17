@@ -13,8 +13,9 @@
     --color-red: rgb(218, 33, 33);
     --color-shadow-big: '';
     --color-shadow: '';
-    --color-text: #000;
+    --color-text: #2c3e50;
     --color-white: #fff;
+    --color-dark: #fff;
 }
 
 .dark-mode:root {
@@ -32,6 +33,7 @@
     --color-shadow: '';
     --color-text: #fff;
     --color-white: #fff;
+    --color-dark: rgb(31, 31, 31);
 }
 
 $color-primary: rgb(76, 99, 233);

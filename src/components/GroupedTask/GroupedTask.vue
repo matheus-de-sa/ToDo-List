@@ -59,13 +59,14 @@ export default {
     width: 100vw;
     height: 5.5rem;
     padding: 0.3rem 0.7rem;
-    background-color: #fff;
+    background-color: var(--color-background-white);
     display: flex;
     .TaskBody {
         width: 100vw;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        color: var(--color-text);
         .BadgeTasks {
             display: flex;
             justify-content: center;
@@ -73,8 +74,8 @@ export default {
             width: 2.5rem;
             height: 2.5rem;
             border-radius: 1rem;
-            background-color: #008c9e;
-            color: #fff;
+            background-color: var(--color-background-blue);
+            color: var(--color-dark);
             font-weight: 700;
         }
     }
