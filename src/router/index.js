@@ -81,7 +81,7 @@ const routes = [
                 },
                 component: () =>
                     import(
-                        /* webpackChunkName: "Home" */ '../views/GroupTask.vue'
+                        /* webpackChunkName: "Group" */ '../views/GroupTask.vue'
                     ),
                 beforeEnter(to, from, next) {
                     store.dispatch('addRoute', from.meta.title)
@@ -95,7 +95,7 @@ const routes = [
                     Auth: true
                 },
                 component: () =>
-                    import(/* webpackChunkName: "Home" */ '../views/Task.vue'),
+                    import(/* webpackChunkName: "Task" */ '../views/Task.vue'),
                 beforeEnter(to, from, next) {
                     store.dispatch('addRoute', from.meta.title)
                     next()
@@ -109,7 +109,22 @@ const routes = [
                 },
                 component: () =>
                     import(
-                        /* webpackChunkName: "Home" */ '../views/Calendar.vue'
+                        /* webpackChunkName: "Calendar" */ '../views/Calendar.vue'
+                    ),
+                beforeEnter(to, from, next) {
+                    store.dispatch('addRoute', from.meta.title)
+                    next()
+                }
+            },
+            {
+                path: 'profile',
+                meta: {
+                    title: 'Profile',
+                    Auth: true
+                },
+                component: () =>
+                    import(
+                        /* webpackChunkName: "Profile" */ '../views/Profile.vue'
                     ),
                 beforeEnter(to, from, next) {
                     store.dispatch('addRoute', from.meta.title)
@@ -137,10 +152,10 @@ router.beforeEach((to, from, next) => {
     }
 
     if (Auth.currentUser !== null && to.path === '/authenticate') {
-        next()
+        next('/')
     }
     if (Auth.currentUser !== null && to.path === '/register') {
-        next()
+        next('/')
     }
 })
 

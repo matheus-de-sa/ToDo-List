@@ -2,7 +2,7 @@
     <div class="header">
         <img src="../../assets/img/icon-512x512.png" />
         <div>
-            <div class="User">
+            <div class="User" @click="$router.push('/profile')">
                 <img
                     v-if="User.photoURL"
                     :src="User.photoURL"
@@ -11,14 +11,12 @@
                 <div v-else>
                     {{ Name }}
                 </div>
-                <DropDown></DropDown>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import DropDown from './DropDown.vue'
 export default {
     data() {
         return {}
@@ -39,8 +37,7 @@ export default {
             const html = document.querySelector('html')
             html.classList.toggle('dark-mode')
         }
-    },
-    components: { DropDown }
+    }
 }
 </script>
 
