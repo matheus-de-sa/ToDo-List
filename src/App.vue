@@ -7,15 +7,12 @@
 <style lang="scss">
 @import url('./assets/scss/style.scss');
 
-body {
-    background-color: var(--color-background-body) !important;
-}
-
 #app {
     font-family: Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
+    background-color: var(--color-background-body) !important;
     color: #2c3e50;
 }
 </style>

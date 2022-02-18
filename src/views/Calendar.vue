@@ -242,7 +242,8 @@ export default {
 
 .CardCalendar {
     box-shadow: 0px 0px 10px -5px #0000004b;
-    background-color: #fff;
+    background-color: var(--color-background-white);
+    color: var(--color-text);
     padding: 1rem;
     border-radius: 1rem;
 }

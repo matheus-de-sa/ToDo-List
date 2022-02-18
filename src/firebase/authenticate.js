@@ -64,9 +64,9 @@ class Authenticate {
     }
     static async logout() {
         try {
-            const user = await Logout(Auth)
+            await Logout(Auth)
 
-            return user
+            return 'Usuario deslogado'
         } catch (error) {
             return error.message
         }

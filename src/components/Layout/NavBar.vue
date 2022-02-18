@@ -33,10 +33,6 @@ export default {
         }
     },
     methods: {
-        css() {
-            const html = document.querySelector('html')
-            html.classList.toggle('dark-mode')
-        }
     }
 }
 </script>
