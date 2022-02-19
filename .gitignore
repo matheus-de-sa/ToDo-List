@@ -24,3 +24,11 @@ pnpm-debug.log*
 .firebase/hosting.ZGlzdA.cache
 src/firebase/index.js
 src/firebase/messagind.js
+src/firebase/*
+*.firebase
+.firebase
+src/firebase
+firebase.json
+firestore.indexes.json
+firestore.rules
+.firebaserc
