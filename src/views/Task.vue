@@ -320,16 +320,16 @@ export default {
 .InputLabel {
     position: relative;
     .inputPerso {
-        color: rgb(44, 62, 80);
+        color: var(--color-text);
         padding: 7px 10px;
-        background-color: rgb(244, 247, 248);
+        background-color: var(--color-background-body);
         border-radius: 12px;
         border: 1px solid transparent;
         width: 100%;
         &:focus-visible {
             padding: 7px 13px;
             outline: none;
-            border-bottom: 2px #008c9e solid;
+            border-bottom: 2px var(--color-blue) solid;
         }
     }
     .fontTextAreaEmpty {
@@ -353,9 +353,9 @@ export default {
 .LabelTextArea {
     position: relative;
     .textArea {
-        color: rgb(44, 62, 80);
+        color: var(--color-text);
         padding: 7px 10px;
-        background-color: rgb(244, 247, 248);
+        background-color: var(--color-background-body);
         border: 1px solid transparent;
         border-radius: 12px;
         width: 100%;
@@ -363,7 +363,7 @@ export default {
         &:focus-visible {
             padding: 7px 13px;
             outline: none;
-            border-bottom: 2px #008c9e solid;
+            border-bottom: 2px var(--color-blue) solid;
         }
     }
     .fontTextAreaEmpty {
@@ -377,7 +377,7 @@ export default {
 }
 
 .LabelSelect {
-    color: #008c9e;
+    color: var(--color-blue);
 }
 
 .LabelInput {
@@ -393,7 +393,8 @@ export default {
 
 .CardAddTask {
     box-shadow: 0px 0px 10px -5px #0000004b;
-    background-color: #fff;
+    background-color: var(--color-background-white);
+    color: var(--color-text);
     padding: 1rem;
     border-radius: 1rem;
 }

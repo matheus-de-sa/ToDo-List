@@ -16,3 +16,23 @@
     color: #2c3e50;
 }
 </style>
+
+<script>
+export default {
+    methods: {
+        notifyMe() {
+            if (!('Notification' in window)) {
+                alert('This browser does not support desktop notification')
+            } else if (Notification.permission === 'granted') {
+                var notification = new Notification('Hi there!')
+            } else if (Notification.permission !== 'denied') {
+                Notification.requestPermission().then(function (permission) {
+                    if (permission === 'granted') {
+                        var notification = new Notification('Hi there!')
+                    }
+                })
+            }
+        }
+    }
+}
+</script>

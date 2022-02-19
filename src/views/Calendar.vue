@@ -69,20 +69,20 @@
                                     <i
                                         v-if="item.type === 'task'"
                                         style="color: #3bb574fb"
-                                        :class="item.read ? 'opacity-50' : ''"
+                                        :class="item.read ? 'opacity-30' : ''"
                                         class="mr-1 bx bx-task"
                                     ></i>
                                     <i
                                         v-if="item.type === 'event'"
                                         style="color: rgb(218, 33, 33)"
                                         class="mr-1 bx bx-calendar-event"
-                                        :class="item.read ? 'opacity-50' : ''"
+                                        :class="item.read ? 'opacity-30' : ''"
                                     ></i>
                                     <i
                                         v-if="item.type === 'reminder'"
                                         style="color: #4d40ff"
                                         class="mr-1 bx bx-receipt"
-                                        :class="item.read ? 'opacity-50' : ''"
+                                        :class="item.read ? 'opacity-30' : ''"
                                     ></i>
                                     <span
                                         :style="
@@ -92,6 +92,10 @@
                                         "
                                         >{{ item.title }}</span
                                     >
+                                    <i
+                                        v-if="taskNot(item.date) && !item.read"
+                                        class="ml-2 bx bxs-bell bx-tada Alert"
+                                    ></i>
                                 </div>
                             </div>
                             <div v-else-if="new Date().getDate() < day.day">
@@ -122,6 +126,7 @@ export default {
         return {
             day: '',
             month: '',
+            year: '',
             attributes: [
                 {
                     dot: true,
@@ -147,6 +152,7 @@ export default {
     },
     async mounted() {
         this.month = new Date().getMonth() + 1
+        this.year = new Date().getFullYear()
 
         let data = this.allTasks
 
@@ -176,19 +182,23 @@ export default {
             dates = dates.sort((a, b) => a.date - b.date)
 
             dates.forEach((item) => {
+                let month = moment(item.date).format('MM')
+                let year = moment(item.date).format('YYYY')
+
                 if (
-                    moment(item.date).format('MM') ===
-                    (this.month < 10 ? `0${this.month}` : this.month)
+                    month ===
+                        (this.month < 10 ? `0${this.month}` : this.month) &&
+                    year === this.year.toString()
                 ) {
                     result.push(item)
                 }
             })
 
             const test = groupBy(result, (i) => {
-                return moment(i.date).format('DD')
+                return moment(i.date).format('DD/MM/YYYY')
             })
 
-            if (this.day > 0) {
+            if (this.day.length > 0) {
                 return [
                     {
                         day: this.day,
@@ -207,12 +217,31 @@ export default {
     },
     methods: {
         changeDate(date) {
-            if (date.day === this.day) this.day = ''
-            else this.day = date.day
+            if (
+                (this.day =
+                    `${date.day}/${
+                        date.month < 10 ? '0' + date.month : date.month
+                    }/${date.year}` === this.day)
+            )
+                this.day = ''
+            else
+                this.day = `${date.day}/${
+                    date.month < 10 ? '0' + date.month : date.month
+                }/${date.year}`
         },
         changeMonth(date) {
             this.day = ''
             this.month = date.month
+            this.year = date.year
+        },
+        taskNot(date) {
+            let dateNow = moment()
+            let result = moment(date).isSameOrBefore(dateNow)
+            let test = false
+            if (result) {
+                test = true
+            }
+            return test
         }
     }
 }
@@ -222,9 +251,16 @@ export default {
 .opacity-50 {
     opacity: 50%;
 }
+.opacity-30 {
+    opacity: 30%;
+}
 </style>
 
 <style lang="scss" scoped>
+.Alert {
+    color: var(--color-background-red) !important;
+}
+
 .month {
     font-size: 1.1rem;
     font-weight: 600;

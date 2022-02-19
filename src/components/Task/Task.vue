@@ -37,6 +37,10 @@
                         <div v-date-format="data.date"></div>
                         <div class="Icon">
                             <i
+                                v-if="taskNot && !read"
+                                class="bx bxs-bell bx-tada Alert"
+                            ></i>
+                            <i
                                 v-if="data.type === 'task'"
                                 class="ml-1 bx bx-task"
                                 style="color: #3bb574fb"
@@ -70,6 +74,7 @@
 <script>
 import { Hooper, Slide } from 'hooper'
 import db from '../../firebase/db'
+import moment from 'moment'
 
 export default {
     name: 'Task',
@@ -95,6 +100,17 @@ export default {
 
             if (data === 2) this.delTask()
             if (data === 0) this.readTask()
+        }
+    },
+    computed: {
+        taskNot() {
+            let date = moment()
+            let result = moment(this.data.date).isSameOrBefore(date)
+            let test = false
+            if (result) {
+                test = true
+            }
+            return test
         }
     },
     methods: {
@@ -147,8 +163,20 @@ export default {
                 data
             )
 
+            let user = ['Users', this.$store.getters.getUser.uid]
+            const groups = await db.readGrouped(user[0], user[1])
+            const tasks = await db.readTasks(user[0], user[1])
+            const groupedTasks = await db.readGroupedTasks(user[0], user[1])
+            const allTasks = await db.readAllTasks(user[0], user[1])
+
             setTimeout(() => {
                 this.slideNext()
+
+                this.$store.dispatch('addGroups', groups)
+                this.$store.dispatch('addTasks', tasks)
+                this.$store.dispatch('addGroupedTasks', groupedTasks)
+                this.$store.dispatch('addAllTasks', allTasks)
+
                 if (this.read) {
                     this.read = false
                 } else {
@@ -161,6 +189,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.Alert {
+    color: var(--color-background-red) !important;
+}
+
 .Read {
     text-decoration: line-through;
 }
